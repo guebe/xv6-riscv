@@ -28,7 +28,8 @@ All this needed to be exploited by writing a user space program (see user/exploi
    info: the shellcode uses qemu semihosting feature to call system on the host!
    call system("cat /home/user/flag").
 8. execute the shellcode by calling the patched syscall.
-   info: I used `sys_write` because it was the only syscall aligned on 16 byte boundary.
+   info: I used `sys_kill` but started overwriting code as soon as on first 16 byte boundary.
+   This makes the exploit more robust with small differences in compiler toolchain.
 
 I also thought about using the trampoline or the trapframe for the exploit.
 Problem with trampoline its only mapped X by kernel.
