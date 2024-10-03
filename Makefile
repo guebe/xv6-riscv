@@ -138,7 +138,7 @@ $U/_exploit: | $U/shellcode.h
 
 $U/shellcode.h: $U/shellcode.S
 	$(CC) $(CFLAGS) -march=rv64gc -c $U/shellcode.S -o $U/shellcode.o
-	$(LD) $(LDFLAGS) --section-start .text=0x80005170 -o $U/shellcode.out $U/shellcode.o
+	$(LD) $(LDFLAGS) --section-start .text=0x80002d20 -o $U/shellcode.out $U/shellcode.o
 	$(OBJCOPY) -S -O binary -j .text $U/shellcode.out $U/shellcode
 	xxd -i $U/shellcode > $U/shellcode.h
 	$(OBJDUMP) -d $U/shellcode.out > $U/shellcode.asm
