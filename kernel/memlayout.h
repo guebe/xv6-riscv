@@ -4,6 +4,7 @@
 // based on qemu's hw/riscv/virt.c:
 //
 // 00001000 -- boot ROM, provided by qemu
+// 00100000 -- syscon
 // 02000000 -- CLINT
 // 0C000000 -- PLIC
 // 10000000 -- uart0 
@@ -16,6 +17,10 @@
 // 80000000 -- entry.S, then kernel text and data
 // end -- start of kernel page allocation area
 // PHYSTOP -- end RAM used by the kernel
+
+// syscon interface (for poweroff, only used in case of panic)
+#define SYSCON 0x100000L
+#define SYSCON_POWEROFF 0x5555
 
 // qemu puts UART registers here in physical memory.
 #define UART0 0x10000000L

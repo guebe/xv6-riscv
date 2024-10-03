@@ -123,6 +123,12 @@ panic(char *s)
   printf(s);
   printf("\n");
   panicked = 1; // freeze uart output from other CPUs
+
+  // Hack: instead of jumping into an infinite loop just poweroff through QEMU
+  // virt board syscon interface. Saves time and money!
+  // See: https://wiki.osdev.org/RISC-V_Meaty_Skeleton_with_QEMU_virt_board.
+  (*(volatile uint32 *)SYSCON) = SYSCON_POWEROFF;
+
   for(;;)
     ;
 }

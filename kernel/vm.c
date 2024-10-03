@@ -24,6 +24,9 @@ kvmmake(void)
   kpgtbl = (pagetable_t) kalloc();
   memset(kpgtbl, 0, PGSIZE);
 
+  // syscon interface (for poweroff, only used in case of panic)
+  kvmmap(kpgtbl, SYSCON, SYSCON, PGSIZE, PTE_R | PTE_W);
+
   // uart registers
   kvmmap(kpgtbl, UART0, UART0, PGSIZE, PTE_R | PTE_W);
 
