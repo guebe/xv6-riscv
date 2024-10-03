@@ -1,0 +1,37 @@
+ECSC round 3 writeup
+====================
+
+(c) <guenter.ebermann@htl-hl.ac.at>
+
+This is a writeup for an exploit written during european cyber cecurity challenge round 3.
+The task was to use a race condition in the kernel to get arbitrary code execution in kernel space.
+All this needed to be exploited by writing a user space program (see user/exploit.c).
+
+1. spam kalloc() from two processes
+2. detect leaked allocs by kfree()'ing from one process.
+   Detection works because kfree overwrites the page with all 0x01
+3. info: the freelist links are stored in the page itself
+   poison the next pointer in the page we still hold.
+   Set the poison to the physical address of the user process's pagetable.
+4. kfree() the page we still hold (double free)
+   We can again detect if the double free is executed because sbrk
+   memsets the memory to all 0x00.
+   this results in our next pointer being set to the top of the freelist.
+   the next kalloc() will memory map the physical address we want!
+   And the address we want is the pagetable. Because controlling the
+   pagetable means we can/will have access to everything.
+5. kalloc() from userspace.
+   info: the kernel pagetable maps the whole memory 1:1!
+   Now we got a R|W memory mapping to the pagetable
+6. modify the pagetable so that we can overwrite kernel text segment.
+7. overwrite a syscall with our shellcode (see user/shellcode.S).
+   info: the shellcode uses qemu semihosting feature to call system on the host!
+   call system("cat /home/user/flag").
+8. execute the shellcode by calling the patched syscall.
+   info: I used `sys_write` because it was the only syscall aligned on 16 byte boundary.
+
+I also thought about using the trampoline or the trapframe for the exploit.
+Problem with trampoline its only mapped X by kernel.
+Problem with trapframe is there is a different one for each user thread. And its not mapped by kernel at all.
+Owning the pagetable is surely the easiest way to go.
+
