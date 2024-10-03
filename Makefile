@@ -134,6 +134,8 @@ UPROGS=\
 	$U/_zombie\
 	$U/_exploit\
 
+$U/_exploit: | $U/shellcode.h
+
 $U/shellcode.h: $U/shellcode.S
 	$(CC) $(CFLAGS) -march=rv64gc -c $U/shellcode.S -o $U/shellcode.o
 	$(LD) $(LDFLAGS) --section-start .text=0x80005170 -o $U/shellcode.out $U/shellcode.o
